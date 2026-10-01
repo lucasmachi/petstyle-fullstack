@@ -1,0 +1,95 @@
+name: Quality checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: petstyle
+          POSTGRES_PASSWORD: ci_only_password
+          POSTGRES_DB: petstyle_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U petstyle -d petstyle_test"
+          --health-interval 5s --health-timeout 3s --health-retries 20
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements-dev.lock.txt
+      - run: pip install -r requirements-dev.lock.txt
+      - run: ruff check app tests && ruff format --check app tests migrations
+      - name: SQLite integration tests
+        run: pytest -q
+      - name: PostgreSQL migrations and tests
+        env:
+          DATABASE_URL: postgresql+psycopg://petstyle:ci_only_password@localhost:5432/petstyle_test
+          TEST_DATABASE_URL: postgresql+psycopg://petstyle:ci_only_password@localhost:5432/petstyle_test
+        run: |
+          alembic upgrade head
+          alembic check
+          pytest -q
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements.lock.txt
+      - run: npm ci
+        working-directory: frontend
+      - run: npm run lint && npm test && npm run build
+        working-directory: frontend
+      - run: npx playwright install --with-deps chromium
+        working-directory: frontend
+      - run: pip install -r backend/requirements.lock.txt
+      - name: Start demo servers
+        env:
+          DEMO_MODE: "true"
+        run: |
+          cd backend
+          alembic upgrade head
+          python -m app.seed --demo
+          nohup uvicorn app.main:app --host 127.0.0.1 --port 8000 > /tmp/api.log 2>&1 &
+          cd ../frontend
+          nohup npm run dev -- --host 127.0.0.1 > /tmp/web.log 2>&1 &
+      - name: Wait for application
+        run: |
+          python - <<'PY'
+          import time, urllib.request
+          for attempt in range(40):
+              try:
+                  urllib.request.urlopen('http://127.0.0.1:5173/api/health', timeout=2)
+                  break
+              except Exception:
+                  if attempt == 39: raise
+                  time.sleep(1)
+          PY
+      - run: npm run test:e2e
+        working-directory: frontend
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            frontend/playwright-report/
+            frontend/test-results/
+          retention-days: 7

@@ -1,0 +1,32 @@
+.env
+.env.*
+!.env.example
+.petstyle-runtime/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.db
+*.db-*
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+node_modules/
+dist/
+playwright-report/
+test-results/
+celerybeat-schedule*
+*.log
+.DS_Store
+#Pacotes e backups locais
+*.zip
+petstyle-podman-v2/
+#Materiais locais não publicados
+/docs/
+/LEIA_PRIMEIRO_PODMAN.md
+/compose.podman.yaml
+/compose.yaml
+/scripts/podman-*.py
+/scripts/podman-*.sh
+/scripts/tests/

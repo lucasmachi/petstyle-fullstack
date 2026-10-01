@@ -1,0 +1,22 @@
+import { useEffect, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { ArrowRight, Check, Clock3, Heart, PawPrint, ShieldCheck, Sparkles, Scissors, CalendarDays } from 'lucide-react'
+import { api } from '../api'
+import { money } from '../format'
+import { Loading, Notice } from '../components/UI'
+const icons = [Sparkles, Scissors, Heart]
+export default function Home() {
+  const [services, setServices] = useState([])
+  const [busy, setBusy] = useState(true)
+  const [error, setError] = useState('')
+  const location = useLocation()
+  useEffect(() => { api('/services').then(setServices).catch(e => setError(e.message)).finally(() => setBusy(false)) }, [])
+  useEffect(() => { if (location.hash) document.querySelector(location.hash)?.scrollIntoView({ behavior: 'smooth' }) }, [location.hash])
+  return <>
+    <section className="hero"><div className="container hero-grid"><div className="hero-copy"><span className="pill"><span className="dot" /> O bem-estar deles começa aqui</span><h1>Para quem faz<br />parte da <span className="word-highlight">família.</span></h1><p>Banho, tosa e uma boa dose de carinho.<br />Agende um momento especial para seu melhor amigo e deixe o cuidado com a gente.</p><div className="hero-actions"><Link className="btn primary" to="/agendar">Encontrar um horário <ArrowRight size={19} /></Link><a className="text-link" href="#servicos">Conhecer os cuidados</a></div><div className="hero-details"><span><Check size={17} /> Agendamento on-line</span><span><Check size={17} /> Atenção individual</span></div></div><div className="hero-art"><span className="hero-orbit" /><PawPrint className="floating-paw" size={45} /><img src="/mascots.svg" alt="Cachorro e gato felizes, juntos em uma ilustração" width="600" height="500" fetchPriority="high" /><div className="care-note"><span><Heart size={21} fill="currentColor" /></span><div>Mais que um banho.<small>Um momento de cuidado.</small></div></div><span className="little-star">✳</span></div></div></section>
+    <div className="promise-strip"><div className="container promise-grid"><span><PawPrint /> Cuidado para cães e gatos</span><span><ShieldCheck /> Um pet por horário</span><span><Clock3 /> Sem pressa, com carinho</span><span><Heart /> Cada detalhe importa</span></div></div>
+    <section className="section container" id="servicos"><div className="section-heading"><div><p className="eyebrow">NOSSO JEITO DE CUIDAR</p><h2>Pequenos cuidados.<br />Grandes rabinhos felizes.</h2></div><p>Escolha o cuidado ideal. O carinho<br />já está incluído em todos eles.</p></div><Notice>{error}</Notice>{busy ? <Loading /> : <div className="service-grid">{services.map((service, index) => { const Icon = icons[index % icons.length]; return <article className={`service-card tone-${index % 3}`} key={service.id}><span className="service-icon"><Icon size={28} /></span><span className="service-number">0{index + 1}</span><h3>{service.name}</h3><p>{service.description}</p><div className="service-meta"><span><Clock3 size={15} /> {service.duration_minutes} minutos</span><strong>{money(service.price_cents)}</strong></div><Link className="service-link" to={`/agendar?servico=${service.id}`}>Quero esse cuidado <ArrowRight size={18} /></Link></article> })}</div>}</section>
+    <section className="how-section"><div className="container how-grid"><div><p className="eyebrow">SIMPLES ASSIM</p><h2>Mais tempo juntos.<br />Menos complicação.</h2><p className="muted">Sua próxima visita fica pronta em poucos passos.<br />Tudo na sua área, sempre à mão.</p><Link className="btn primary" to="/agendar">Vamos agendar? <ArrowRight size={18} /></Link></div><div className="steps-list">{[['01', 'Conte sobre seu pet', 'Cadastre seu companheiro e nos conte como ele gosta de ser cuidado.'], ['02', 'Escolha o melhor momento', 'Consulte os horários disponíveis e reserve o cuidado ideal.'], ['03', 'Pronto. É só trazer o carinho!', 'Acompanhe sua reserva na sua área e prepare seu pet para a visita.']].map(([n, title, text]) => <div className="how-step" key={n}><span>{n}</span><div><h3>{title}</h3><p>{text}</p></div></div>)}</div></div></section>
+    <section className="section container"><div className="home-cta"><div><p className="eyebrow">UM CONVITE AO CARINHO</p><h2>O próximo dia de cuidado<br />pode ser o favorito dele.</h2><Link className="btn yellow" to="/agendar"><CalendarDays size={19} /> Reservar um horário</Link></div><PawPrint size={190} strokeWidth={1} /></div></section>
+  </>
+}
