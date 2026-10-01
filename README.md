@@ -1,126 +1,127 @@
-# PetStyle — plataforma full stack de agendamento para pets
+[English](README.md) | [Português](leia-me.md)
 
-Aplicação web para gestão de serviços de banho e tosa, com autenticação, agendamento, gestão operacional e persistência de dados.
+# PetStyle — Full Stack Pet Care Booking Platform
 
-O projeto demonstra a construção de uma solução full stack completa, conectando uma interface React a uma API Python/FastAPI, com controle de acesso, validações, banco de dados, testes automatizados e integração contínua.
+A web application for managing pet grooming services, including authentication, appointments, staff operations, and data persistence.
 
-## Funcionalidades
+PetStyle demonstrates a complete full stack solution connecting a React interface to a Python/FastAPI API, with access control, validation, database persistence, automated tests, and continuous integration.
 
-### Tutor
+## Features
 
-- Login e logout.
-- Consulta de serviços e horários disponíveis.
-- Criação de agendamentos.
-- Consulta do histórico e status dos agendamentos.
-- Validação de formulários.
-- Tratamento de erros na interface.
+### Pet owners
 
-### Equipe
+- Sign in and sign out.
+- Browse services and available appointment times.
+- Create appointments.
+- View appointment history and status.
+- Form validation and user-friendly error handling.
 
-- Login com perfil administrativo.
-- Visualização dos agendamentos recebidos.
-- Atualização do status dos atendimentos.
-- Exportação dos agendamentos em CSV.
-- Separação de permissões entre tutor e equipe.
+### Staff
 
-### Segurança e qualidade
+- Sign in with a staff account.
+- View incoming appointments.
+- Update appointment status.
+- Export appointments as CSV.
+- Role-based access control.
 
-- Sessão baseada em cookie HttpOnly.
-- Proteção contra CSRF.
-- Controle de acesso por perfil.
-- Limitação de tentativas de autenticação.
-- Validação de dados com schemas tipados.
-- Testes automatizados de backend e frontend.
-- Testes end-to-end com Playwright.
-- Pipeline de CI com GitHub Actions.
+### Security and quality
 
-## Arquitetura
+- Session-based authentication using an HttpOnly cookie.
+- CSRF protection.
+- Role-based access control.
+- Authentication attempt rate limiting.
+- Data validation with typed schemas.
+- Automated backend and frontend tests.
+- End-to-end tests with Playwright.
+- Continuous integration with GitHub Actions.
+
+## Architecture
 
 ```text
-Navegador
+Browser
    │
    ▼
-React + Vite ── proxy /api ──► FastAPI + Uvicorn
+React + Vite ── /api proxy ──► FastAPI + Uvicorn
                                   │
                                   ▼
-                              SQLite
+                                SQLite
 ```
 
-Durante o desenvolvimento, o Vite encaminha as requisições `/api` para a API em `127.0.0.1:8000`.
+During development, Vite forwards `/api` requests to the API at `127.0.0.1:8000`.
 
-Essa separação entre frontend e backend facilita manutenção, testes e uma futura publicação dos serviços de forma independente.
+Separating the frontend and backend makes the application easier to maintain and test, and allows the services to be deployed independently in the future.
 
-## Tecnologias utilizadas
+## Technologies
 
 ### Frontend
 
-| Tecnologia | Utilização | Motivo da escolha |
+| Technology | Purpose | Why it was chosen |
 |---|---|---|
-| React | Construção das telas e componentes | Permite criar uma interface modular e reutilizável. |
-| React Router | Navegação entre páginas | Organiza as rotas e permite proteger áreas autenticadas. |
-| Vite | Servidor de desenvolvimento e build | Oferece inicialização rápida e configuração simples de proxy. |
-| Tailwind CSS | Estilização da interface | Permite desenvolver layouts consistentes com classes utilitárias. |
-| Lucide React | Ícones da aplicação | Fornece ícones SVG leves e consistentes. |
-| JavaScript/JSX | Linguagem do frontend | Mantém a implementação direta e acessível. |
+| React | User interface and components | Makes it possible to build a modular, reusable interface. |
+| React Router | Page navigation | Organizes routes and supports protected areas for authenticated users. |
+| Vite | Development server and build tool | Provides fast startup and straightforward proxy configuration. |
+| Tailwind CSS | Interface styling | Helps create consistent layouts using utility classes. |
+| Lucide React | Application icons | Provides lightweight, consistent SVG icons. |
+| JavaScript/JSX | Frontend language | Keeps the implementation direct and approachable. |
 
 ### Backend
 
-| Tecnologia | Utilização | Motivo da escolha |
+| Technology | Purpose | Why it was chosen |
 |---|---|---|
-| Python | Linguagem principal da API | Possui ecossistema maduro para APIs, dados e testes. |
-| FastAPI | Framework da API REST | Oferece tipagem, validação automática e documentação OpenAPI. |
-| Uvicorn | Servidor ASGI | Executa a aplicação FastAPI localmente e em ambientes de produção. |
-| Pydantic Settings | Configuração por ambiente | Centraliza e valida variáveis de ambiente. |
-| SQLAlchemy | ORM e sessões do banco | Permite trabalhar com banco de forma organizada e desacoplada. |
-| Alembic | Migrações do banco | Versiona a estrutura do banco e torna sua criação reproduzível. |
-| SQLite | Banco de demonstração | Não exige serviço externo e facilita a avaliação local. |
-| Argon2 | Hash de senhas | Utiliza um algoritmo moderno para armazenamento seguro de senhas. |
-| email-validator | Validação de e-mails | Rejeita endereços inválidos nos contratos da API. |
+| Python | API programming language | Has a mature ecosystem for APIs, data, and testing. |
+| FastAPI | REST API framework | Provides type hints, automatic validation, and OpenAPI documentation. |
+| Uvicorn | ASGI server | Runs the FastAPI application locally and in compatible production environments. |
+| Pydantic Settings | Environment configuration | Centralizes and validates environment variables. |
+| SQLAlchemy | ORM and database sessions | Provides an organized, database-independent persistence layer. |
+| Alembic | Database migrations | Versions the database schema and makes setup reproducible. |
+| SQLite | Demo database | Requires no external service and makes local evaluation easier. |
+| Argon2 | Password hashing | Uses a modern algorithm for securely storing passwords. |
+| email-validator | Email validation | Rejects invalid email addresses in API contracts. |
 
-### Infraestrutura opcional
+### Optional infrastructure
 
-| Tecnologia | Utilização | Motivo da escolha |
+| Technology | Purpose | Why it was chosen |
 |---|---|---|
-| Redis | Cache opcional | Reduz leituras repetidas em ambientes compartilhados. |
-| Celery | Tarefas assíncronas | Permite processar notificações fora da requisição web. |
-| psycopg | PostgreSQL | Mantém o projeto preparado para migrar do SQLite em produção. |
-| Dockerfile | Empacotamento | Documenta como criar imagens isoladas da aplicação. |
-| Shell scripts | Automação local | Reduz comandos repetitivos em ambientes Unix e Git Bash. |
-| GitHub Actions | Integração contínua | Automatiza validações e testes a cada alteração. |
+| Redis | Optional cache | Reduces repeated reads in shared environments. |
+| Celery | Background tasks | Processes notifications outside the web request cycle. |
+| psycopg | PostgreSQL support | Keeps the project ready to migrate from SQLite for production. |
+| Dockerfiles | Application packaging | Document how to build isolated application images. |
+| Shell scripts | Local automation | Reduces repetitive commands in Unix and Git Bash environments. |
+| GitHub Actions | Continuous integration | Automates checks and tests after changes. |
 
-Redis, Celery, PostgreSQL e Docker são extensões opcionais. A demonstração padrão funciona somente com SQLite.
+Redis, Celery, PostgreSQL, and Docker are optional extensions. The default demo runs with SQLite alone.
 
-### Testes e qualidade
+### Testing and code quality
 
-| Tecnologia | Utilização | Motivo da escolha |
+| Technology | Purpose | Why it was chosen |
 |---|---|---|
-| Pytest | Testes do backend | Facilita testes de API, fixtures e cenários isolados. |
-| Vitest | Testes do frontend | Integra-se ao Vite e executa rapidamente. |
-| Testing Library | Testes de interface | Valida o comportamento percebido pelo usuário. |
-| jsdom | Ambiente dos testes frontend | Simula recursos básicos do navegador. |
-| Playwright | Testes end-to-end | Valida a aplicação real pelo navegador. |
-| ESLint | Análise estática | Detecta problemas comuns no código JavaScript. |
+| Pytest | Backend tests | Supports API tests, fixtures, and isolated scenarios. |
+| Vitest | Frontend tests | Integrates with Vite and runs quickly. |
+| Testing Library | UI tests | Focuses on behavior users can observe. |
+| jsdom | Frontend test environment | Simulates basic browser features during unit tests. |
+| Playwright | End-to-end tests | Tests the application in a real browser. |
+| ESLint | Static analysis | Detects common JavaScript issues. |
 
-## Pré-requisitos
+## Prerequisites
 
 - Git.
-- Python 3.12 ou superior.
-- Node.js e npm.
+- Python 3.12 or newer.
+- Node.js and npm.
 
-O projeto não exige WSL. É possível executá-lo utilizando Windows com Git Bash, PowerShell, Linux ou macOS.
+WSL is not required. You can run the project on Windows using Git Bash or PowerShell, as well as on Linux or macOS.
 
-## Como executar no Windows com Git Bash
+## Run on Windows with Git Bash
 
-### 1. Clonar o projeto
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/lucasmachi/petstyle-fullstack.git
 cd petstyle-fullstack
 ```
 
-### 2. Preparar o backend
+### 2. Set up and start the backend
 
-Abra um terminal Git Bash na raiz do projeto:
+Open a Git Bash terminal in the project root:
 
 ```bash
 cd backend
@@ -132,22 +133,22 @@ cp .env.example .env
 .venv/Scripts/python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-Se o comando `python` não existir, utilize:
+If the `python` command is unavailable, create the virtual environment with:
 
 ```bash
 py -3.12 -m venv .venv
 ```
 
-A API ficará disponível em:
+The API will be available at:
 
 - API: http://127.0.0.1:8000
-- Swagger: http://127.0.0.1:8000/docs
-- OpenAPI: http://127.0.0.1:8000/openapi.json
+- Swagger UI: http://127.0.0.1:8000/docs
+- OpenAPI schema: http://127.0.0.1:8000/openapi.json
 - Health check: http://127.0.0.1:8000/api/health
 
-### 3. Preparar o frontend
+### 3. Set up and start the frontend
 
-Abra um segundo terminal Git Bash na raiz do projeto:
+Open a second Git Bash terminal in the project root:
 
 ```bash
 cd frontend
@@ -155,15 +156,15 @@ npm ci
 npm run dev -- --host 127.0.0.1 --port 5173
 ```
 
-A aplicação ficará disponível em:
+The application will be available at:
 
 http://127.0.0.1:5173
 
-O arquivo `vite.config.js` já está configurado para encaminhar `/api` para a API em `http://127.0.0.1:8000`.
+The `vite.config.js` file is configured to forward `/api` requests to `http://127.0.0.1:8000`.
 
-### PowerShell
+## Run on Windows with PowerShell
 
-Backend:
+### Backend
 
 ```powershell
 cd backend
@@ -175,7 +176,9 @@ Copy-Item .env.example .env
 .\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-Frontend, em outro terminal:
+### Frontend
+
+Open a second PowerShell terminal:
 
 ```powershell
 cd frontend
@@ -183,13 +186,13 @@ npm.cmd ci
 npm.cmd run dev -- --host 127.0.0.1 --port 5173
 ```
 
-No PowerShell, utilize `npm.cmd` caso a política de execução do Windows bloqueie o arquivo `npm.ps1`.
+Use `npm.cmd` in PowerShell if the Windows execution policy blocks the `npm.ps1` script.
 
-No Windows, utiliza-se `requirements-dev.txt` porque o arquivo de dependências travadas inclui `uvloop`, que não possui suporte nativo ao Windows.
+On Windows, use `requirements-dev.txt` because the locked dependency file includes `uvloop`, which does not support native Windows.
 
-## Linux, macOS ou WSL
+## Run on Linux, macOS, or WSL
 
-Backend:
+### Backend
 
 ```bash
 git clone https://github.com/lucasmachi/petstyle-fullstack.git
@@ -202,7 +205,9 @@ cp .env.example .env
 .venv/bin/python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-Frontend, em outro terminal:
+### Frontend
+
+Open a second terminal:
 
 ```bash
 cd petstyle-fullstack/frontend
@@ -210,62 +215,62 @@ npm ci
 npm run dev -- --host 127.0.0.1 --port 5173
 ```
 
-O script `scripts/setup-local.sh` automatiza a preparação do ambiente Unix, incluindo instalação das dependências, migrações, seed e instalação do frontend.
+The `scripts/setup-local.sh` script automates Unix environment setup, including dependency installation, database migrations, demo data seeding, and frontend installation.
 
-## Contas de demonstração
+## Demo accounts
 
-| Perfil | E-mail | Senha |
+| Role | Email | Password |
 |---|---|---|
-| Tutor | `tutor@petstyle.example.com` | `PetStyle123!` |
-| Equipe | `equipe@petstyle.example.com` | `PetStyle123!` |
+| Pet owner | `tutor@petstyle.example.com` | `PetStyle123!` |
+| Staff | `equipe@petstyle.example.com` | `PetStyle123!` |
 
-Essas contas existem somente para demonstração local.
+These accounts are for local demonstrations only.
 
-## Roteiro de demonstração
+## Demo walkthrough
 
-1. Acesse http://127.0.0.1:5173.
-2. Entre como tutor.
-3. Consulte um serviço e um horário disponível.
-4. Crie um agendamento.
-5. Saia da conta.
-6. Entre como equipe.
-7. Localize o agendamento criado.
-8. Atualize o status do atendimento.
-9. Atualize a página e confirme a persistência.
-10. Teste uma senha inválida.
+1. Open http://127.0.0.1:5173.
+2. Sign in as a pet owner.
+3. Browse a service and available appointment time.
+4. Create an appointment.
+5. Sign out.
+6. Sign in as staff.
+7. Find the appointment you created.
+8. Update its status.
+9. Refresh the page and confirm the change persisted.
+10. Try an incorrect password and confirm access is denied.
 
-## Testes automatizados
+## Automated tests
 
 ### Backend
 
-Windows com PowerShell:
+Windows with PowerShell:
 
 ```powershell
 cd backend
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Windows com Git Bash:
+Windows with Git Bash:
 
 ```bash
 cd backend
 .venv/Scripts/python.exe -m pytest -q
 ```
 
-Linux, macOS ou WSL:
+Linux, macOS, or WSL:
 
 ```bash
 cd backend
 .venv/bin/python -m pytest -q
 ```
 
-O backend possui testes de autenticação, permissões, agendamentos, validações e notificações.
+Backend tests cover authentication, permissions, appointments, validation, and notifications.
 
-Resultado validado durante o desenvolvimento: **18 testes aprovados**.
+Validated during development: **18 tests passed**.
 
 ### Frontend
 
-Windows com PowerShell:
+Windows with PowerShell:
 
 ```powershell
 cd frontend
@@ -274,7 +279,7 @@ npm.cmd run lint
 npm.cmd run build
 ```
 
-Windows com Git Bash, Linux, macOS ou WSL:
+Windows with Git Bash, Linux, macOS, or WSL:
 
 ```bash
 cd frontend
@@ -283,9 +288,11 @@ npm run lint
 npm run build
 ```
 
-Resultado validado durante o desenvolvimento: **4 testes aprovados**.
+Validated during development: **4 tests passed**.
 
 ### End-to-end
+
+With the backend and frontend running:
 
 PowerShell:
 
@@ -295,7 +302,7 @@ npx.cmd playwright install
 npm.cmd run test:e2e
 ```
 
-Git Bash, Linux, macOS ou WSL:
+Git Bash, Linux, macOS, or WSL:
 
 ```bash
 cd frontend
@@ -303,89 +310,89 @@ npx playwright install
 npm run test:e2e
 ```
 
-O fluxo end-to-end está em `frontend/e2e/flows.spec.js`.
+The end-to-end flow is defined in `frontend/e2e/flows.spec.js`.
 
-## Estrutura do projeto
+## Project structure
 
 ```text
 petstyle-fullstack/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml              # Pipeline de integração contínua
+│       └── ci.yml              # Continuous integration pipeline
 ├── backend/
 │   ├── app/
-│   │   ├── routes/             # Rotas de autenticação, tutor e equipe
-│   │   ├── cache.py            # Cache opcional
-│   │   ├── config.py           # Configurações por ambiente
-│   │   ├── db.py               # Engine e sessões SQLAlchemy
-│   │   ├── domain.py           # Regras de negócio
-│   │   ├── models.py           # Modelos persistidos
-│   │   ├── schemas.py          # Contratos e validações
-│   │   ├── security.py         # Sessão, CSRF e rate limiting
-│   │   ├── tasks.py            # Tarefas assíncronas
-│   │   └── main.py             # Entrada da aplicação FastAPI
-│   ├── migrations/             # Migrações Alembic
-│   ├── tests/                  # Testes do backend
-│   ├── requirements.txt        # Dependências de produção
-│   ├── requirements-dev.txt    # Dependências de desenvolvimento
-│   ├── pyproject.toml          # Configurações de testes e lint
-│   └── Dockerfile              # Empacotamento do backend
+│   │   ├── routes/             # Authentication, pet owner, and staff routes
+│   │   ├── cache.py            # Optional cache
+│   │   ├── config.py           # Environment configuration
+│   │   ├── db.py               # SQLAlchemy engine and sessions
+│   │   ├── domain.py           # Business rules
+│   │   ├── models.py           # Persisted models
+│   │   ├── schemas.py          # API contracts and validation
+│   │   ├── security.py         # Sessions, CSRF, and rate limiting
+│   │   ├── tasks.py            # Background tasks
+│   │   └── main.py             # FastAPI application entry point
+│   ├── migrations/             # Alembic migrations
+│   ├── tests/                  # Backend tests
+│   ├── requirements.txt        # Production dependencies
+│   ├── requirements-dev.txt    # Development dependencies
+│   ├── pyproject.toml          # Test and lint configuration
+│   └── Dockerfile              # Backend image
 ├── frontend/
 │   ├── src/
-│   │   ├── components/          # Componentes reutilizáveis
-│   │   ├── pages/               # Telas da aplicação
-│   │   ├── api.js               # Cliente HTTP e CSRF
-│   │   ├── auth.jsx             # Contexto de autenticação
-│   │   └── App.jsx              # Rotas principais
-│   ├── e2e/                     # Testes end-to-end
-│   ├── public/                  # Arquivos estáticos
-│   ├── package.json             # Scripts e dependências
-│   ├── vite.config.js           # Proxy e configuração do Vitest
-│   ├── playwright.config.js     # Configuração do Playwright
-│   └── Dockerfile               # Empacotamento do frontend
+│   │   ├── components/         # Reusable components
+│   │   ├── pages/              # Application pages
+│   │   ├── api.js              # HTTP client and CSRF handling
+│   │   ├── auth.jsx            # Authentication context
+│   │   └── App.jsx             # Main routes
+│   ├── e2e/                    # End-to-end tests
+│   ├── public/                 # Static assets
+│   ├── package.json            # Scripts and dependencies
+│   ├── vite.config.js          # Proxy and Vitest configuration
+│   ├── playwright.config.js    # Playwright configuration
+│   └── Dockerfile              # Frontend image
 ├── scripts/
-│   ├── setup-local.sh           # Preparação automática
-│   ├── run-api.sh               # Inicialização da API
-│   └── run-web.sh               # Inicialização do frontend
-├── .env.example                 # Variáveis de ambiente
-├── .gitignore                   # Arquivos ignorados
-├── .nvmrc                       # Versão esperada do Node
-└── .python-version              # Versão esperada do Python
+│   ├── setup-local.sh          # Automated setup
+│   ├── run-api.sh              # Start the API
+│   └── run-web.sh              # Start the frontend
+├── .env.example                # Environment variable examples
+├── .gitignore                  # Ignored files
+├── .nvmrc                      # Expected Node.js version
+└── .python-version             # Expected Python version
 ```
 
-## Segurança
+## Security
 
-- O identificador da sessão fica em cookie `HttpOnly`.
-- Operações de alteração exigem token CSRF.
-- As rotas verificam autenticação e perfil.
-- O usuário só pode acessar seus próprios agendamentos.
-- Existe limitação de tentativas de autenticação.
-- A configuração de produção exige cookie seguro e origens HTTPS.
-- As senhas não são armazenadas em texto puro.
+- The session identifier is stored in an `HttpOnly` cookie.
+- Mutating requests require a CSRF token.
+- Routes check authentication and user role.
+- Pet owners can access only their own appointments.
+- Authentication attempts are rate-limited.
+- Production configuration requires secure cookies and HTTPS origins.
+- Passwords are not stored in plain text.
 
 ## CI/CD
 
-O arquivo `.github/workflows/ci.yml` automatiza:
+The `.github/workflows/ci.yml` workflow automates:
 
-- Preparação do ambiente Python.
-- Testes do backend.
-- Instalação e testes do frontend.
-- Verificação do build.
-- Inicialização dos serviços.
-- Health check da API.
-- Testes end-to-end com Playwright.
+- Python environment setup.
+- Backend tests.
+- Frontend dependency installation and tests.
+- Build validation.
+- Service startup.
+- API health checks.
+- Playwright end-to-end tests.
 
-## Próximas evoluções
+## Future improvements
 
-- Deploy automatizado.
-- PostgreSQL em produção.
-- Redis gerenciado.
-- Notificações reais por e-mail.
-- Recuperação de senha.
-- Verificação de e-mail.
-- Observabilidade com métricas e logs.
-- Mais testes end-to-end.
+- Automated deployment.
+- PostgreSQL for production.
+- Managed Redis.
+- Real email notifications.
+- Password recovery.
+- Email verification.
+- Observability with metrics and logs.
+- Additional end-to-end tests.
 
-## Licença
+## License
 
-Projeto disponibilizado para fins educacionais e de portfólio.
+This project is available for educational and portfolio purposes.
