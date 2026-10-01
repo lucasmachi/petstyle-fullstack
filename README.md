@@ -125,11 +125,11 @@ Abra um terminal Git Bash na raiz do projeto:
 ```bash
 cd backend
 python -m venv .venv
-.venv/Scripts/python -m pip install -r requirements-dev.lock.txt
+.venv/Scripts/python.exe -m pip install -r requirements-dev.txt
 cp .env.example .env
-.venv/Scripts/python -m alembic upgrade head
-.venv/Scripts/python -m app.seed --demo
-.venv/Scripts/python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+.venv/Scripts/python.exe -m alembic upgrade head
+.venv/Scripts/python.exe -m app.seed --demo
+.venv/Scripts/python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 Se o comando `python` não existir, utilize:
@@ -168,7 +168,7 @@ Backend:
 ```powershell
 cd backend
 py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements-dev.lock.txt
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 Copy-Item .env.example .env
 .\.venv\Scripts\python.exe -m alembic upgrade head
 .\.venv\Scripts\python.exe -m app.seed --demo
@@ -179,9 +179,13 @@ Frontend, em outro terminal:
 
 ```powershell
 cd frontend
-npm ci
-npm run dev -- --host 127.0.0.1 --port 5173
+npm.cmd ci
+npm.cmd run dev -- --host 127.0.0.1 --port 5173
 ```
+
+No PowerShell, utilize `npm.cmd` caso a política de execução do Windows bloqueie o arquivo `npm.ps1`.
+
+No Windows, utiliza-se `requirements-dev.txt` porque o arquivo de dependências travadas inclui `uvloop`, que não possui suporte nativo ao Windows.
 
 ## Linux, macOS ou WSL
 
@@ -234,14 +238,21 @@ Essas contas existem somente para demonstração local.
 
 ### Backend
 
-No Windows com Git Bash:
+Windows com PowerShell:
+
+```powershell
+cd backend
+.\.venv\Scripts\python.exe -m pytest -q
+```
+
+Windows com Git Bash:
 
 ```bash
 cd backend
-.venv/Scripts/python -m pytest -q
+.venv/Scripts/python.exe -m pytest -q
 ```
 
-No Linux, macOS ou WSL:
+Linux, macOS ou WSL:
 
 ```bash
 cd backend
@@ -254,6 +265,17 @@ Resultado validado durante o desenvolvimento: **18 testes aprovados**.
 
 ### Frontend
 
+Windows com PowerShell:
+
+```powershell
+cd frontend
+npm.cmd test -- --run
+npm.cmd run lint
+npm.cmd run build
+```
+
+Windows com Git Bash, Linux, macOS ou WSL:
+
 ```bash
 cd frontend
 npm test -- --run
@@ -265,7 +287,15 @@ Resultado validado durante o desenvolvimento: **4 testes aprovados**.
 
 ### End-to-end
 
-Com backend e frontend em execução:
+PowerShell:
+
+```powershell
+cd frontend
+npx.cmd playwright install
+npm.cmd run test:e2e
+```
+
+Git Bash, Linux, macOS ou WSL:
 
 ```bash
 cd frontend
@@ -285,7 +315,7 @@ petstyle-fullstack/
 ├── backend/
 │   ├── app/
 │   │   ├── routes/             # Rotas de autenticação, tutor e equipe
-│   │   ├── cache.py           # Cache opcional
+│   │   ├── cache.py            # Cache opcional
 │   │   ├── config.py           # Configurações por ambiente
 │   │   ├── db.py               # Engine e sessões SQLAlchemy
 │   │   ├── domain.py           # Regras de negócio
@@ -302,25 +332,25 @@ petstyle-fullstack/
 │   └── Dockerfile              # Empacotamento do backend
 ├── frontend/
 │   ├── src/
-│   │   ├── components/         # Componentes reutilizáveis
-│   │   ├── pages/              # Telas da aplicação
-│   │   ├── api.js              # Cliente HTTP e CSRF
-│   │   ├── auth.jsx            # Contexto de autenticação
-│   │   └── App.jsx             # Rotas principais
-│   ├── e2e/                    # Testes end-to-end
-│   ├── public/                 # Arquivos estáticos
-│   ├── package.json            # Scripts e dependências
-│   ├── vite.config.js          # Proxy e configuração do Vitest
-│   ├── playwright.config.js    # Configuração do Playwright
-│   └── Dockerfile              # Empacotamento do frontend
+│   │   ├── components/          # Componentes reutilizáveis
+│   │   ├── pages/               # Telas da aplicação
+│   │   ├── api.js               # Cliente HTTP e CSRF
+│   │   ├── auth.jsx             # Contexto de autenticação
+│   │   └── App.jsx              # Rotas principais
+│   ├── e2e/                     # Testes end-to-end
+│   ├── public/                  # Arquivos estáticos
+│   ├── package.json             # Scripts e dependências
+│   ├── vite.config.js           # Proxy e configuração do Vitest
+│   ├── playwright.config.js     # Configuração do Playwright
+│   └── Dockerfile               # Empacotamento do frontend
 ├── scripts/
-│   ├── setup-local.sh          # Preparação automática
-│   ├── run-api.sh              # Inicialização da API
-│   └── run-web.sh              # Inicialização do frontend
-├── .env.example                # Variáveis de ambiente
-├── .gitignore                  # Arquivos ignorados
-├── .nvmrc                      # Versão esperada do Node
-└── .python-version             # Versão esperada do Python
+│   ├── setup-local.sh           # Preparação automática
+│   ├── run-api.sh               # Inicialização da API
+│   └── run-web.sh               # Inicialização do frontend
+├── .env.example                 # Variáveis de ambiente
+├── .gitignore                   # Arquivos ignorados
+├── .nvmrc                       # Versão esperada do Node
+└── .python-version              # Versão esperada do Python
 ```
 
 ## Segurança
