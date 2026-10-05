@@ -6,6 +6,23 @@ A web application for managing pet grooming services, including authentication, 
 
 PetStyle demonstrates a complete full stack solution connecting a React interface to a Python/FastAPI API, with access control, validation, database persistence, automated tests, and continuous integration.
 
+
+## Static demonstration
+
+This repository includes a static browser-based demonstration of PetStyle.
+
+The static demo does not require the Python API, SQLite, Redis, or any other external service. It uses fictitious data stored temporarily in the browser, allowing visitors to explore the interface, sign in with demo profiles, manage pets, create and cancel appointments, view the staff panel, and generate a CSV report.
+
+The data is reset when the page is refreshed. No information is sent to or stored on a server.
+
+To run the static demonstration locally:
+
+```bash
+cd frontend
+npm ci
+npm run dev -- --mode demo
+```
+
 ## Features
 
 ### Pet owners
