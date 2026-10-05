@@ -4,6 +4,22 @@ Aplicação web para gestão de serviços de banho e tosa, com autenticação, a
 
 O projeto demonstra a construção de uma solução full stack completa, conectando uma interface React a uma API Python/FastAPI, com controle de acesso, validações, banco de dados, testes automatizados e integração contínua.
 
+## Demonstração estática
+
+Este repositório inclui uma demonstração estática do PetStyle que funciona diretamente no navegador.
+
+A demonstração estática não precisa da API Python, do SQLite, do Redis ou de qualquer outro serviço externo. Ela usa dados fictícios armazenados temporariamente no navegador. Assim, o visitante pode explorar a interface, entrar com perfis de demonstração, cadastrar pets, criar e cancelar agendamentos, acessar o painel da equipe e gerar um relatório CSV.
+
+Os dados são reiniciados quando a página é atualizada. Nenhuma informação é enviada ou armazenada em um servidor.
+
+Para executar a demonstração estática localmente:
+
+```bash
+cd frontend
+npm ci
+npm run dev -- --mode demo
+```
+
 ## Funcionalidades
 
 ### Tutor
